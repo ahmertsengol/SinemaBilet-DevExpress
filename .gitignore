@@ -1,0 +1,160 @@
+# .NET Core / .NET 8.0
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.dll
+*.exe
+*.pdb
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio 2022
+.vs/
+.vscode/
+.idea/
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+*.sln.iml
+
+# User-specific files
+*.userprefs
+*.dbmdl
+*.jfm
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Database files (SQLite, Entity Framework)
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+
+# DevExpress license files
+licenses.licx
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Windows Specific
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Mono auto generated files
+mono_crash.*
+
+# Backup & report files
+_UpgradeReport_Files/
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+ServiceFabricBackup/
+*.rptproj.bak
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# MightyMoose
+*.mm.*
+AutoTest.Net/
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# TeamCity
+_TeamCity*
+
+# DotCover
+*.dotCover
+
+# Azure Stream Analytics local run output
+ASALocalRun/
+
+# Sensitive data
+appsettings.Development.json
+appsettings.*.json
+secrets.json
+*.pfx
+*.snk
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*~
+*.orig
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+# VS Code specific
+*.vscode/
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# Entity Framework
+migrations/
+
+# Local user data
+user.config
