@@ -30,8 +30,12 @@ internal static class Program
 
         ApplicationConfiguration.Initialize();
 
-        // TODO: Splash screen DevExpress ile yapılacak
-        // Şimdilik direkt giriş ekranına geçiyoruz
+        // === SPLASH SCREEN ===
+        // Yükleme ekranını göster
+        using (var frmYukleme = new FrmYukleme())
+        {
+            frmYukleme.ShowDialog();
+        }
 
         // Veritabanı işlemleri
         try
