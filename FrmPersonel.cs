@@ -405,9 +405,8 @@ namespace Sinemaci.BiletSistemi.Forms
 
         private void btnRaporOlustur_Click(object sender, EventArgs e)
         {
-            // TODO: FrmRaporOlustur implementation
-            XtraMessageBox.Show("Rapor Oluştur formu henüz tamamlanmadı.", "Bilgi",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using var frmRapor = new FrmRaporOlustur();
+            frmRapor.ShowDialog();
         }
 
         private void btnCikis_Click(object sender, EventArgs e)

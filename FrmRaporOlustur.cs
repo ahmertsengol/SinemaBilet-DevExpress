@@ -110,14 +110,6 @@ namespace Sinemaci.BiletSistemi.Forms
         {
             try
             {
-                // Format seçimi kontrolü
-                if (!chkPdf.Checked && !chkExcel.Checked)
-                {
-                    XtraMessageBox.Show("Lütfen en az bir format seçin (PDF veya Excel).", "Uyarı",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 // Tarih kontrolü
                 if (dtpBaslangic.EditValue == null || dtpBitis.EditValue == null)
                 {
@@ -149,51 +141,22 @@ namespace Sinemaci.BiletSistemi.Forms
                 Cursor = Cursors.WaitCursor;
 
                 var raporService = new SRapor(_context);
-                var olusturulanDosyalar = new List<string>();
 
-                // Rapor klasörünü oluştur
-                var raporKlasoru = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sinemaci_Raporlar");
-                if (!Directory.Exists(raporKlasoru))
+                // Masaüstü konumu
+                var masaustu = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+                // Dosya adı: Tarih formatında (yyyy-MM-dd.txt)
+                var tarihFormatli = DateTime.Now.ToString("yyyy-MM-dd");
+                var txtYol = Path.Combine(masaustu, $"{tarihFormatli}.txt");
+
+                // TXT rapor oluştur
+                if (raporTuru == RaporTuru.FilmBazli)
                 {
-                    Directory.CreateDirectory(raporKlasoru);
+                    await raporService.FilmBazliTxtOlusturAsync(baslangic, bitis, txtYol);
                 }
-
-                // Dosya adı için timestamp
-                var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                var raporTurAdi = raporTuru == RaporTuru.FilmBazli ? "FilmBazli" : "MusteriBazli";
-
-                // PDF oluştur
-                if (chkPdf.Checked)
+                else
                 {
-                    var pdfYol = Path.Combine(raporKlasoru, $"Rapor_{raporTurAdi}_{timestamp}.pdf");
-
-                    if (raporTuru == RaporTuru.FilmBazli)
-                    {
-                        await raporService.FilmBazliPdfOlusturAsync(baslangic, bitis, pdfYol);
-                    }
-                    else
-                    {
-                        await raporService.MusteriBazliPdfOlusturAsync(baslangic, bitis, pdfYol);
-                    }
-
-                    olusturulanDosyalar.Add(pdfYol);
-                }
-
-                // Excel oluştur
-                if (chkExcel.Checked)
-                {
-                    var excelYol = Path.Combine(raporKlasoru, $"Rapor_{raporTurAdi}_{timestamp}.xlsx");
-
-                    if (raporTuru == RaporTuru.FilmBazli)
-                    {
-                        await raporService.FilmBazliExcelOlusturAsync(baslangic, bitis, excelYol);
-                    }
-                    else
-                    {
-                        await raporService.MusteriBazliExcelOlusturAsync(baslangic, bitis, excelYol);
-                    }
-
-                    olusturulanDosyalar.Add(excelYol);
+                    await raporService.MusteriBazliTxtOlusturAsync(baslangic, bitis, txtYol);
                 }
 
                 Cursor = Cursors.Default;
@@ -201,15 +164,15 @@ namespace Sinemaci.BiletSistemi.Forms
                 btnOlustur.Text = "✓ Rapor Oluştur";
 
                 // Başarı mesajı
-                var mesaj = $"Rapor başarıyla oluşturuldu!\n\nKonum: {raporKlasoru}\n\nDosyaları açmak ister misiniz?";
+                var mesaj = $"Rapor başarıyla oluşturuldu!\n\nKonum: {txtYol}\n\nDosyayı açmak ister misiniz?";
                 var sonuc = XtraMessageBox.Show(mesaj, "Başarılı", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                 if (sonuc == DialogResult.Yes)
                 {
-                    // Klasörü aç
+                    // Dosyayı aç
                     Process.Start(new ProcessStartInfo
                     {
-                        FileName = raporKlasoru,
+                        FileName = txtYol,
                         UseShellExecute = true,
                         Verb = "open"
                     });
