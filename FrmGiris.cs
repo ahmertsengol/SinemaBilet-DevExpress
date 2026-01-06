@@ -96,17 +96,13 @@ namespace Sinemaci.BiletSistemi.Forms
         {
             try
             {
-                // TODO: FrmKaydol oluşturulduğunda aktif edilecek
-                XtraMessageBox.Show("Kayıt formu henüz DevExpress'e taşınmadı.\n\nMevcut projede kullanılabilir.",
-                    "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var kaydolForm = new FrmKaydol();
+                var sonuc = kaydolForm.ShowDialog();
 
-                // var kaydolForm = new FrmKaydol();
-                // var sonuc = kaydolForm.ShowDialog();
-                //
-                // if (sonuc == DialogResult.OK)
-                // {
-                //     DevExpressUIHelper.ShowToast(this, "Kayıt başarılı! Giriş yapabilirsiniz.", AlertType.Success);
-                // }
+                if (sonuc == DialogResult.OK)
+                {
+                    DevExpressUIHelper.ShowToast(this, "Kayıt başarılı! Giriş yapabilirsiniz.", AlertType.Success);
+                }
             }
             catch (Exception ex)
             {
@@ -119,17 +115,13 @@ namespace Sinemaci.BiletSistemi.Forms
         {
             try
             {
-                // TODO: FrmSifreUnuttum oluşturulduğunda aktif edilecek
-                XtraMessageBox.Show("Şifre sıfırlama formu henüz DevExpress'e taşınmadı.\n\nMevcut projede kullanılabilir.",
-                    "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var sifreUnuttumForm = new FrmSifreUnuttum();
+                var sonuc = sifreUnuttumForm.ShowDialog();
 
-                // var sifreUnuttumForm = new FrmSifreUnuttum();
-                // var sonuc = sifreUnuttumForm.ShowDialog();
-                //
-                // if (sonuc == DialogResult.OK)
-                // {
-                //     DevExpressUIHelper.ShowToast(this, "Şifreniz başarıyla değiştirildi!", AlertType.Success);
-                // }
+                if (sonuc == DialogResult.OK)
+                {
+                    DevExpressUIHelper.ShowToast(this, "Şifreniz başarıyla değiştirildi!", AlertType.Success);
+                }
             }
             catch (Exception ex)
             {

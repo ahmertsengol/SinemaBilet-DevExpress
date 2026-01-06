@@ -47,7 +47,7 @@ namespace Sinemaci.BiletSistemi.Forms
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(770, 100);
+            this.pnlHeader.Size = new System.Drawing.Size(1000, 100);
             this.pnlHeader.TabIndex = 0;
             //
             // lblFilmAd
@@ -83,7 +83,7 @@ namespace Sinemaci.BiletSistemi.Forms
             this.lblFiyat.Appearance.Options.UseTextOptions = true;
             this.lblFiyat.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lblFiyat.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblFiyat.Location = new System.Drawing.Point(600, 30);
+            this.lblFiyat.Location = new System.Drawing.Point(800, 30);
             this.lblFiyat.Name = "lblFiyat";
             this.lblFiyat.Size = new System.Drawing.Size(180, 40);
             this.lblFiyat.TabIndex = 2;
@@ -98,7 +98,7 @@ namespace Sinemaci.BiletSistemi.Forms
             this.pnlEkran.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlEkran.Location = new System.Drawing.Point(0, 100);
             this.pnlEkran.Name = "pnlEkran";
-            this.pnlEkran.Size = new System.Drawing.Size(800, 50);
+            this.pnlEkran.Size = new System.Drawing.Size(1000, 50);
             this.pnlEkran.TabIndex = 1;
             //
             // lblEkran
@@ -113,7 +113,7 @@ namespace Sinemaci.BiletSistemi.Forms
             this.lblEkran.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblEkran.Location = new System.Drawing.Point(0, 0);
             this.lblEkran.Name = "lblEkran";
-            this.lblEkran.Size = new System.Drawing.Size(800, 50);
+            this.lblEkran.Size = new System.Drawing.Size(1000, 50);
             this.lblEkran.TabIndex = 0;
             this.lblEkran.Text = "▬▬▬▬▬▬▬▬ EKRAN ▬▬▬▬▬▬▬▬";
             //
@@ -125,8 +125,8 @@ namespace Sinemaci.BiletSistemi.Forms
             this.flpKoltuk.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flpKoltuk.Location = new System.Drawing.Point(0, 150);
             this.flpKoltuk.Name = "flpKoltuk";
-            this.flpKoltuk.Padding = new System.Windows.Forms.Padding(50, 20, 50, 20);
-            this.flpKoltuk.Size = new System.Drawing.Size(800, 350);
+            this.flpKoltuk.Padding = new System.Windows.Forms.Padding(50, 30, 50, 30);
+            this.flpKoltuk.Size = new System.Drawing.Size(1000, 520);
             this.flpKoltuk.TabIndex = 2;
             //
             // pnlFooter
@@ -136,10 +136,10 @@ namespace Sinemaci.BiletSistemi.Forms
             this.pnlFooter.Controls.Add(this.btnSatinAl);
             this.pnlFooter.Controls.Add(this.btnIptal);
             this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlFooter.Location = new System.Drawing.Point(0, 500);
+            this.pnlFooter.Location = new System.Drawing.Point(0, 670);
             this.pnlFooter.Name = "pnlFooter";
             this.pnlFooter.Padding = new System.Windows.Forms.Padding(20, 10, 20, 10);
-            this.pnlFooter.Size = new System.Drawing.Size(800, 80);
+            this.pnlFooter.Size = new System.Drawing.Size(1000, 80);
             this.pnlFooter.TabIndex = 3;
             //
             // lblSecim
@@ -164,7 +164,7 @@ namespace Sinemaci.BiletSistemi.Forms
             this.btnSatinAl.Appearance.Options.UseForeColor = true;
             this.btnSatinAl.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSatinAl.Enabled = false;
-            this.btnSatinAl.Location = new System.Drawing.Point(500, 15);
+            this.btnSatinAl.Location = new System.Drawing.Point(700, 15);
             this.btnSatinAl.Name = "btnSatinAl";
             this.btnSatinAl.Size = new System.Drawing.Size(180, 50);
             this.btnSatinAl.TabIndex = 1;
@@ -180,7 +180,7 @@ namespace Sinemaci.BiletSistemi.Forms
             this.btnIptal.Appearance.Options.UseFont = true;
             this.btnIptal.Appearance.Options.UseForeColor = true;
             this.btnIptal.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnIptal.Location = new System.Drawing.Point(690, 15);
+            this.btnIptal.Location = new System.Drawing.Point(890, 15);
             this.btnIptal.Name = "btnIptal";
             this.btnIptal.Size = new System.Drawing.Size(90, 50);
             this.btnIptal.TabIndex = 2;
@@ -191,9 +191,9 @@ namespace Sinemaci.BiletSistemi.Forms
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(800, 650);
+            this.ClientSize = new System.Drawing.Size(1000, 750);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Controls.Add(this.flpKoltuk);
             this.Controls.Add(this.pnlFooter);
             this.Controls.Add(this.pnlEkran);

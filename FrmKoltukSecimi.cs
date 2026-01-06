@@ -74,57 +74,95 @@ namespace Sinemaci.BiletSistemi.Forms
 
             flpKoltuk.Controls.Clear();
             int koltukSayisi = _seans.Salon.KoltukSayisi;
-            int satirBasinaKoltuk = 6; // Her satırda 6 koltuk
+            int satirBasinaKoltuk = 10; // Standart sinema düzeni: 10 koltuk/satır
 
-            FlowLayoutPanel? currentRow = null;
-            for (int i = 1; i <= koltukSayisi; i++)
+            int satirSayisi = (int)Math.Ceiling((double)koltukSayisi / satirBasinaKoltuk);
+            int koltukIndex = 1;
+
+            for (int satirNo = 0; satirNo < satirSayisi; satirNo++)
             {
-                // Her 6 koltukta bir yeni satır
-                if ((i - 1) % satirBasinaKoltuk == 0)
+                // Sıra harfi (A, B, C, D, ...)
+                char satirHarfi = (char)('A' + satirNo);
+
+                // Satır container oluştur
+                Panel satirContainer = new Panel
                 {
-                    currentRow = new FlowLayoutPanel
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    Padding = new Padding(0),
+                    Margin = new Padding(0, 5, 0, 5)
+                };
+
+                FlowLayoutPanel satirPanel = new FlowLayoutPanel
+                {
+                    FlowDirection = FlowDirection.LeftToRight,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    Padding = new Padding(0),
+                    Margin = new Padding(0)
+                };
+
+                // Sıra etiketi (sol tarafta)
+                LabelControl lblSira = new LabelControl
+                {
+                    Text = satirHarfi.ToString(),
+                    AutoSizeMode = LabelAutoSizeMode.None,
+                    Size = new Size(50, 70),
+                    Appearance =
                     {
-                        FlowDirection = FlowDirection.LeftToRight,
-                        AutoSize = true,
-                        AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                        Padding = new Padding(0, 5, 0, 5),
-                        Margin = new Padding(0)
-                    };
-                    flpKoltuk.Controls.Add(currentRow);
+                        Font = new Font("Segoe UI", 22F, FontStyle.Bold),
+                        ForeColor = Color.FromArgb(44, 62, 80),
+                        TextOptions = { HAlignment = DevExpress.Utils.HorzAlignment.Center, VAlignment = DevExpress.Utils.VertAlignment.Center }
+                    }
+                };
+                satirPanel.Controls.Add(lblSira);
+
+                // Bu satırdaki koltuk sayısını hesapla
+                int buSatirdakiKoltukSayisi = Math.Min(satirBasinaKoltuk, koltukSayisi - koltukIndex + 1);
+
+                for (int koltukNoSatirda = 1; koltukNoSatirda <= buSatirdakiKoltukSayisi; koltukNoSatirda++)
+                {
+                    bool dolu = _doluKoltuklar.Contains(koltukIndex);
+                    string koltukEtiketi = $"{satirHarfi}-{koltukNoSatirda}";
+                    SimpleButton koltukBtn = KoltukButtonOlustur(koltukIndex, koltukEtiketi, dolu);
+                    satirPanel.Controls.Add(koltukBtn);
+
+                    // Her 5 koltukta bir koridor boşluğu (orta koridor)
+                    if (koltukNoSatirda == 5 && buSatirdakiKoltukSayisi > 5)
+                    {
+                        Panel koridor = new Panel
+                        {
+                            Width = 30,
+                            Height = 70,
+                            BackColor = Color.Transparent,
+                            Margin = new Padding(0)
+                        };
+                        satirPanel.Controls.Add(koridor);
+                    }
+
+                    koltukIndex++;
+                    if (koltukIndex > koltukSayisi) break;
                 }
 
-                bool dolu = _doluKoltuklar.Contains(i);
-                SimpleButton koltukBtn = KoltukButtonOlustur(i, dolu);
-                currentRow?.Controls.Add(koltukBtn);
-
-                // Her 3 koltukta bir koridor boşluğu ekle
-                if (i % 3 == 0 && i % satirBasinaKoltuk != 0)
-                {
-                    Panel koridor = new Panel
-                    {
-                        Width = 30,
-                        Height = 75,
-                        BackColor = Color.Transparent,
-                        Margin = new Padding(0)
-                    };
-                    currentRow?.Controls.Add(koridor);
-                }
+                satirContainer.Controls.Add(satirPanel);
+                flpKoltuk.Controls.Add(satirContainer);
             }
         }
 
-        private SimpleButton KoltukButtonOlustur(int koltukNo, bool dolu)
+        private SimpleButton KoltukButtonOlustur(int koltukNo, string koltukEtiketi, bool dolu)
         {
             SimpleButton btn = new SimpleButton
             {
-                Size = new Size(75, 75),
-                Text = koltukNo.ToString(),
-                Tag = koltukNo,
+                Size = new Size(70, 70),
+                Text = koltukEtiketi,
+                Tag = koltukNo, // Veritabanı için gerçek koltuk numarası
                 Cursor = dolu ? Cursors.No : Cursors.Hand,
-                Enabled = !dolu
+                Enabled = !dolu,
+                Margin = new Padding(3)
             };
 
             // DevExpress Appearance ayarları
-            btn.Appearance.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btn.Appearance.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btn.Appearance.BackColor = dolu ? DevExpressTheme.KoltukDolu : DevExpressTheme.KoltukBos;
             btn.Appearance.ForeColor = Color.White;
             btn.Appearance.Options.UseBackColor = true;
@@ -173,8 +211,8 @@ namespace Sinemaci.BiletSistemi.Forms
             _secilenButton = btn;
             btn.Appearance.BackColor = DevExpressTheme.KoltukSecili;
 
-            // Footer güncelle
-            lblSecim.Text = $"Seçilen: Koltuk {_secilenKoltuk}";
+            // Footer güncelle - Koltuk etiketini göster (A-5 gibi)
+            lblSecim.Text = $"Seçilen: {btn.Text}";
             btnSatinAl.Enabled = true;
         }
 

@@ -46,6 +46,8 @@ namespace Sinemaci.BiletSistemi.Forms
         // === ADIM 1: EMAIL DOĞRULAMA KODU GÖNDER ===
         private async void btnKodGonder_Click(object sender, EventArgs e)
         {
+            btnKodGonder.Enabled = false;
+
             try
             {
                 // Email validasyon
@@ -54,6 +56,7 @@ namespace Sinemaci.BiletSistemi.Forms
                 {
                     XtraMessageBox.Show("E-posta adresi boş olamaz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtEmail.Focus();
+                    btnKodGonder.Enabled = true;
                     return;
                 }
 
@@ -61,6 +64,7 @@ namespace Sinemaci.BiletSistemi.Forms
                 {
                     XtraMessageBox.Show("Geçerli bir e-posta adresi girin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtEmail.Focus();
+                    btnKodGonder.Enabled = true;
                     return;
                 }
 
@@ -72,9 +76,14 @@ namespace Sinemaci.BiletSistemi.Forms
                     {
                         XtraMessageBox.Show("Bu e-posta adresi sistemde kayıtlı değil.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         txtEmail.Focus();
+                        btnKodGonder.Enabled = true;
                         return;
                     }
                 }
+
+                // Kullanıcıya geri bildirim
+                btnKodGonder.Text = "E-posta gönderiliyor...";
+                Application.DoEvents();
 
                 // Doğrulama kodu oluştur (6 haneli)
                 Random rnd = new Random();
@@ -84,9 +93,12 @@ namespace Sinemaci.BiletSistemi.Forms
                 var emailService = new SEmail();
                 bool emailGonderildi = await emailService.SifreResetKoduGonderAsync(_email, _dogrulamaKodu);
 
+                btnKodGonder.Text = "Kod Gönder";
+
                 if (!emailGonderildi)
                 {
-                    XtraMessageBox.Show("Doğrulama kodu gönderilemedi. Lütfen email ayarlarınızı kontrol edin.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    XtraMessageBox.Show("Doğrulama kodu gönderilemedi. Lütfen email ayarlarınızı kontrol edin.\n\nInternet bağlantınızı kontrol edin.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    btnKodGonder.Enabled = true;
                     return;
                 }
 
@@ -99,7 +111,9 @@ namespace Sinemaci.BiletSistemi.Forms
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show($"Hata oluştu: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnKodGonder.Text = "Kod Gönder";
+                btnKodGonder.Enabled = true;
+                XtraMessageBox.Show($"Hata oluştu:\n\n{ex.Message}\n\nDetay:\n{ex.StackTrace}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

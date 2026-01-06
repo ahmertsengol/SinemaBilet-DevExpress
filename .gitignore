@@ -1,4 +1,4 @@
-# .NET Core / .NET 8.0
+# .NET / .NET Core / .NET 8.0
 bin/
 obj/
 *.user
@@ -24,7 +24,7 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
-# Visual Studio 2022
+# Visual Studio
 .vs/
 .vscode/
 .idea/
@@ -33,11 +33,15 @@ bld/
 *.userosscache
 *.sln.docstates
 *.sln.iml
+*.opendb
+*.VC.db
 
 # User-specific files
 *.userprefs
 *.dbmdl
 *.jfm
+*.user
+*.suo.lock
 
 # NuGet Packages
 *.nupkg
@@ -50,7 +54,7 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
-# Database files (SQLite, Entity Framework)
+# Database files (SQLite, Entity Framework, SQL Server)
 *.db
 *.db-shm
 *.db-wal
@@ -58,9 +62,11 @@ artifacts/
 *.sqlite3
 *.mdf
 *.ldf
+*.ndf
 
-# DevExpress license files
+# DevExpress
 licenses.licx
+*.licx
 
 # Windows image file caches
 Thumbs.db
@@ -85,9 +91,13 @@ Icon
 .Spotlight-V100
 .Trashes
 
+# Linux
+.directory
+
 # JetBrains Rider
 .idea/
 *.sln.iml
+*.sh
 
 # Mono auto generated files
 mono_crash.*
@@ -103,6 +113,7 @@ ServiceFabricBackup/
 # Test results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
+TestResults/
 
 # NCrunch
 _NCrunch_*
@@ -133,6 +144,7 @@ appsettings.*.json
 secrets.json
 *.pfx
 *.snk
+app.config
 
 # Temporary files
 *.tmp
@@ -148,13 +160,31 @@ Thumbs.db
 .DS_Store
 
 # VS Code specific
-*.vscode/
 .vscode/settings.json
 .vscode/launch.json
 .vscode/extensions.json
 
 # Entity Framework
-migrations/
+Migrations/
 
 # Local user data
 user.config
+
+# NuGet restore
+.vs/
+.nuget/
+
+# Rider
+.idea/
+*.sln.iml
+
+# WinForms Designer Generated Files
+*.resx
+*.Designer.cs
+
+# Application-specific generated files
+obj/Debug/
+obj/Release/
+
+# DevExpress related
+DXCore.log

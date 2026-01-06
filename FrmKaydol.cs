@@ -45,6 +45,9 @@ namespace Sinemaci.BiletSistemi.Forms
         // === BİLGİ GİRİŞİ - DEVAM BUTONU ===
         private async void btnDevam_Click(object sender, EventArgs e)
         {
+            // Butonu disable et (çift tıklama önleme)
+            btnDevam.Enabled = false;
+
             try
             {
                 // Validasyon
@@ -53,6 +56,7 @@ namespace Sinemaci.BiletSistemi.Forms
                 {
                     XtraMessageBox.Show("Ad Soyad boş olamaz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtAdSoyad.Focus();
+                    btnDevam.Enabled = true;
                     return;
                 }
 
@@ -60,6 +64,7 @@ namespace Sinemaci.BiletSistemi.Forms
                 {
                     XtraMessageBox.Show("Ad Soyad en az 3 karakter olmalıdır.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtAdSoyad.Focus();
+                    btnDevam.Enabled = true;
                     return;
                 }
 
@@ -68,6 +73,7 @@ namespace Sinemaci.BiletSistemi.Forms
                 {
                     XtraMessageBox.Show("E-posta adresi boş olamaz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtEmail.Focus();
+                    btnDevam.Enabled = true;
                     return;
                 }
 
@@ -75,6 +81,7 @@ namespace Sinemaci.BiletSistemi.Forms
                 {
                     XtraMessageBox.Show("Geçerli bir e-posta adresi girin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtEmail.Focus();
+                    btnDevam.Enabled = true;
                     return;
                 }
 
@@ -86,6 +93,7 @@ namespace Sinemaci.BiletSistemi.Forms
                     {
                         XtraMessageBox.Show("Bu e-posta adresi zaten kayıtlı.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         txtEmail.Focus();
+                        btnDevam.Enabled = true;
                         return;
                     }
                 }
@@ -95,6 +103,7 @@ namespace Sinemaci.BiletSistemi.Forms
                 {
                     XtraMessageBox.Show("Şifre boş olamaz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtSifre.Focus();
+                    btnDevam.Enabled = true;
                     return;
                 }
 
@@ -102,6 +111,7 @@ namespace Sinemaci.BiletSistemi.Forms
                 {
                     XtraMessageBox.Show("Şifre en az 6 karakter olmalıdır.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtSifre.Focus();
+                    btnDevam.Enabled = true;
                     return;
                 }
 
@@ -109,6 +119,7 @@ namespace Sinemaci.BiletSistemi.Forms
                 {
                     XtraMessageBox.Show("Şifreler eşleşmiyor.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtSifreTekrar.Focus();
+                    btnDevam.Enabled = true;
                     return;
                 }
 
@@ -116,8 +127,13 @@ namespace Sinemaci.BiletSistemi.Forms
                 if (bakiye < 0)
                 {
                     XtraMessageBox.Show("Bakiye negatif olamaz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    btnDevam.Enabled = true;
                     return;
                 }
+
+                // Kullanıcıya geri bildirim
+                btnDevam.Text = "E-posta gönderiliyor...";
+                Application.DoEvents(); // UI'ı güncelle
 
                 // Doğrulama kodu oluştur (6 haneli)
                 Random rnd = new Random();
@@ -127,9 +143,13 @@ namespace Sinemaci.BiletSistemi.Forms
                 var emailService = new SEmail();
                 bool emailGonderildi = await emailService.DogrulamaKoduGonderAsync(_email, _dogrulamaKodu, adSoyad);
 
+                // Buton metnini geri al
+                btnDevam.Text = "Devam Et";
+
                 if (!emailGonderildi)
                 {
-                    XtraMessageBox.Show("Doğrulama kodu gönderilemedi. Lütfen email ayarlarınızı kontrol edin.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    XtraMessageBox.Show("Doğrulama kodu gönderilemedi. Lütfen email ayarlarınızı kontrol edin.\n\nInternet bağlantınızı kontrol edin.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    btnDevam.Enabled = true;
                     return;
                 }
 
@@ -142,7 +162,9 @@ namespace Sinemaci.BiletSistemi.Forms
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show($"Hata oluştu: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnDevam.Text = "Devam Et";
+                btnDevam.Enabled = true;
+                XtraMessageBox.Show($"Hata oluştu:\n\n{ex.Message}\n\nDetay:\n{ex.StackTrace}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -210,8 +232,14 @@ namespace Sinemaci.BiletSistemi.Forms
         // === YENİDEN GÖNDERİM ===
         private async void btnYenidenGonder_Click(object sender, EventArgs e)
         {
+            btnYenidenGonder.Enabled = false;
+            var oncekiMetin = btnYenidenGonder.Text;
+
             try
             {
+                btnYenidenGonder.Text = "Gönderiliyor...";
+                Application.DoEvents();
+
                 // Yeni kod oluştur
                 Random rnd = new Random();
                 _dogrulamaKodu = rnd.Next(100000, 999999).ToString();
@@ -231,7 +259,12 @@ namespace Sinemaci.BiletSistemi.Forms
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show($"Hata: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                XtraMessageBox.Show($"Hata:\n\n{ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnYenidenGonder.Text = oncekiMetin;
+                btnYenidenGonder.Enabled = true;
             }
         }
     }
