@@ -74,10 +74,17 @@ internal static class Program
     {
         // === KULLANICILAR ===
         db.Kullanicilar.AddRange(
-          new Kullanici { AdSoyad = "Ali Müşteri", Email = "musteri@demo.com", SifreHash = "123", Bakiye = 500, Rol = "Musteri" },
+          // Admin
+          new Kullanici { AdSoyad = "Admin Yönetici", Email = "admin@demo.com", SifreHash = "123", Bakiye = 0, Rol = "Admin" },
+          // Personel
           new Kullanici { AdSoyad = "Ayşe Personel", Email = "personel@demo.com", SifreHash = "123", Bakiye = 0, Rol = "Personel" },
+          new Kullanici { AdSoyad = "Ahmet Çalışkan", Email = "personel2@demo.com", SifreHash = "123", Bakiye = 0, Rol = "Personel" },
+          // Müşteriler
+          new Kullanici { AdSoyad = "Ali Müşteri", Email = "musteri@demo.com", SifreHash = "123", Bakiye = 500, Rol = "Musteri" },
           new Kullanici { AdSoyad = "Mehmet Yılmaz", Email = "mehmet@demo.com", SifreHash = "123", Bakiye = 350, Rol = "Musteri" },
-          new Kullanici { AdSoyad = "Zeynep Kaya", Email = "zeynep@demo.com", SifreHash = "123", Bakiye = 600, Rol = "Musteri" }
+          new Kullanici { AdSoyad = "Zeynep Kaya", Email = "zeynep@demo.com", SifreHash = "123", Bakiye = 600, Rol = "Musteri" },
+          new Kullanici { AdSoyad = "Fatma Demir", Email = "fatma@demo.com", SifreHash = "123", Bakiye = 450, Rol = "Musteri" },
+          new Kullanici { AdSoyad = "Can Öztürk", Email = "can@demo.com", SifreHash = "123", Bakiye = 800, Rol = "Musteri" }
         );
         db.SaveChanges();
 

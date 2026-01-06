@@ -33,6 +33,7 @@ namespace Sinemaci.BiletSistemi.Forms
             // Grid ayarları
             ConfigureFilmGrid();
             ConfigureSalonGrid();
+            ConfigureMusteriGrid();
 
             // Toolbar hover efektleri
             DevExpressUIHelper.AddHoverEffect(btnSeansYonet, DevExpressTheme.Info, Color.FromArgb(41, 128, 185));
@@ -47,6 +48,9 @@ namespace Sinemaci.BiletSistemi.Forms
             DevExpressUIHelper.AddHoverEffect(btnSalonEkle, DevExpressTheme.Success, Color.FromArgb(39, 174, 96));
             DevExpressUIHelper.AddHoverEffect(btnSalonSil, DevExpressTheme.Danger, Color.FromArgb(192, 57, 43));
 
+            // Musteri butonları hover
+            DevExpressUIHelper.AddHoverEffect(btnMusteriBakiyeGuncelle, DevExpressTheme.Info, Color.FromArgb(41, 128, 185));
+
             // SpinEdit ayarları - Film
             numSure.Properties.MinValue = 1;
             numSure.Properties.MaxValue = 400;
@@ -57,6 +61,13 @@ namespace Sinemaci.BiletSistemi.Forms
             numKoltukSayisi.Properties.MaxValue = 300;
             numKoltukSayisi.EditValue = 50;
 
+            // SpinEdit ayarları - Musteri
+            numMusteriBakiye.Properties.MinValue = 0;
+            numMusteriBakiye.Properties.MaxValue = 100000;
+            numMusteriBakiye.EditValue = 0;
+            numMusteriBakiye.Properties.DisplayFormat.FormatString = "c2"; // Currency format
+            numMusteriBakiye.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+
             // Tab stil ayarları
             tabControl.Appearance.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             tabControl.Appearance.ForeColor = DevExpressTheme.Primary;
@@ -66,6 +77,7 @@ namespace Sinemaci.BiletSistemi.Forms
             // İlk yükleme
             await YenileFilmlerAsync();
             await YenileSalonlarAsync();
+            await YenileMusterilerAsync();
         }
 
         #region Film Yönetimi
@@ -388,6 +400,144 @@ namespace Sinemaci.BiletSistemi.Forms
             catch (Exception ex)
             {
                 XtraMessageBox.Show($"Salon silinirken hata oluştu: {ex.Message}", "Hata",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        #endregion
+
+        #region Musteri Yonetimi
+
+        private void ConfigureMusteriGrid()
+        {
+            var gridView = gridMusteri.MainView as GridView;
+            if (gridView == null) return;
+
+            gridView.OptionsView.ShowAutoFilterRow = true;
+            gridView.OptionsView.ShowGroupPanel = false;
+            gridView.OptionsView.ShowFooter = true;
+            gridView.OptionsSelection.MultiSelect = false;
+
+            gridView.OptionsView.EnableAppearanceEvenRow = true;
+            gridView.Appearance.EvenRow.BackColor = Color.FromArgb(240, 244, 247);
+
+            // Row click event
+            gridView.FocusedRowChanged += GridViewMusteri_FocusedRowChanged;
+        }
+
+        private void GridViewMusteri_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
+        {
+            var gridView = sender as GridView;
+            if (gridView == null || gridView.FocusedRowHandle < 0) return;
+
+            try
+            {
+                txtMusteriAd.Text = gridView.GetFocusedRowCellValue("AdSoyad")?.ToString();
+                txtMusteriEmail.Text = gridView.GetFocusedRowCellValue("Email")?.ToString();
+                numMusteriBakiye.EditValue = gridView.GetFocusedRowCellValue("Bakiye");
+            }
+            catch { }
+        }
+
+        private async Task YenileMusterilerAsync()
+        {
+            try
+            {
+                using var db = new AppDbContext();
+                var musteriler = await db.Kullanicilar
+                    .Where(k => k.Rol == "Musteri")
+                    .Select(k => new { k.Id, k.AdSoyad, k.Email, k.Bakiye })
+                    .OrderBy(k => k.AdSoyad)
+                    .ToListAsync();
+
+                gridMusteri.DataSource = musteriler;
+                ConfigureMusteriColumns();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Musteri listesi yuklenirken hata olustu: {ex.Message}", "Hata",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ConfigureMusteriColumns()
+        {
+            var gridView = gridMusteri.MainView as GridView;
+            if (gridView == null) return;
+
+            if (gridView.Columns["Id"] != null)
+                gridView.Columns["Id"].Visible = false;
+
+            if (gridView.Columns["AdSoyad"] != null)
+            {
+                gridView.Columns["AdSoyad"].Caption = "Ad Soyad";
+                gridView.Columns["AdSoyad"].Width = 200;
+                gridView.Columns["AdSoyad"].AppearanceCell.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            }
+
+            if (gridView.Columns["Email"] != null)
+            {
+                gridView.Columns["Email"].Caption = "E-posta";
+                gridView.Columns["Email"].Width = 250;
+            }
+
+            if (gridView.Columns["Bakiye"] != null)
+            {
+                gridView.Columns["Bakiye"].Caption = "Bakiye";
+                gridView.Columns["Bakiye"].Width = 120;
+                gridView.Columns["Bakiye"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                gridView.Columns["Bakiye"].DisplayFormat.FormatString = "c2";
+                gridView.Columns["Bakiye"].AppearanceCell.ForeColor = DevExpressTheme.Success;
+                gridView.Columns["Bakiye"].AppearanceCell.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+
+                // Summary
+                gridView.Columns["Bakiye"].Summary.Add(DevExpress.Data.SummaryItemType.Sum, "Bakiye", "Toplam: {0:c2}");
+            }
+
+            gridView.BestFitColumns();
+        }
+
+        private async void btnMusteriBakiyeGuncelle_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var gridView = gridMusteri.MainView as GridView;
+                if (gridView == null || gridView.FocusedRowHandle < 0)
+                {
+                    XtraMessageBox.Show("Lutfen bir musteri secin.", "Uyari",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var id = (int)gridView.GetFocusedRowCellValue("Id");
+                var yeniBakiye = numMusteriBakiye.Value;
+
+                if (yeniBakiye < 0)
+                {
+                    XtraMessageBox.Show("Bakiye negatif olamaz.", "Uyari",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var result = XtraMessageBox.Show($"Bakiyeyi {yeniBakiye:c2} olarak guncellemek istiyor musunuz?", "Onay",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result != DialogResult.Yes)
+                    return;
+
+                using var db = new AppDbContext();
+                var kullanici = await db.Kullanicilar.FindAsync(id);
+                if (kullanici == null) return;
+
+                kullanici.Bakiye = yeniBakiye;
+                await db.SaveChangesAsync();
+
+                DevExpressUIHelper.ShowToast(this, "Bakiye basariyla guncellendi!", AlertType.Success);
+                await YenileMusterilerAsync();
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show($"Bakiye guncellenirken hata olustu: {ex.Message}", "Hata",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

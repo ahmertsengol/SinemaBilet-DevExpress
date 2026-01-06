@@ -41,6 +41,19 @@ namespace Sinemaci.BiletSistemi.Forms
             gridFilm = new GridControl();
             gridViewFilm = new GridView();
             tabSalon = new XtraTabPage();
+            tabMusteri = new XtraTabPage();
+            splitMusteri = new SplitContainerControl();
+            grpMusteriGiris = new GroupControl();
+            lblMusteriAd = new LabelControl();
+            txtMusteriAd = new TextEdit();
+            lblMusteriEmail = new LabelControl();
+            txtMusteriEmail = new TextEdit();
+            lblMusteriBakiye = new LabelControl();
+            numMusteriBakiye = new SpinEdit();
+            btnMusteriBakiyeGuncelle = new SimpleButton();
+            grpMusteriListe = new GroupControl();
+            gridMusteri = new GridControl();
+            gridViewMusteri = new GridView();
             splitSalon = new SplitContainerControl();
             grpSalonGiris = new GroupControl();
             lblSalonAd = new LabelControl();
@@ -89,6 +102,22 @@ namespace Sinemaci.BiletSistemi.Forms
             grpSalonListe.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridSalon).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridViewSalon).BeginInit();
+            tabMusteri.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitMusteri).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)splitMusteri.Panel1).BeginInit();
+            splitMusteri.Panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitMusteri.Panel2).BeginInit();
+            splitMusteri.Panel2.SuspendLayout();
+            splitMusteri.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)grpMusteriGiris).BeginInit();
+            grpMusteriGiris.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)txtMusteriAd.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtMusteriEmail.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numMusteriBakiye.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)grpMusteriListe).BeginInit();
+            grpMusteriListe.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)gridMusteri).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridViewMusteri).BeginInit();
             SuspendLayout();
             // 
             // pnlHeader
@@ -188,7 +217,7 @@ namespace Sinemaci.BiletSistemi.Forms
             tabControl.SelectedTabPage = tabFilm;
             tabControl.Size = new Size(770, 560);
             tabControl.TabIndex = 2;
-            tabControl.TabPages.AddRange(new XtraTabPage[] { tabFilm, tabSalon });
+            tabControl.TabPages.AddRange(new XtraTabPage[] { tabFilm, tabSalon, tabMusteri });
             // 
             // tabFilm
             //
@@ -502,7 +531,107 @@ namespace Sinemaci.BiletSistemi.Forms
             gridViewSalon.Name = "gridViewSalon";
             gridViewSalon.OptionsBehavior.Editable = false;
             gridViewSalon.OptionsView.ShowGroupPanel = false;
-            // 
+
+            // === TAB MUSTERI ===
+            tabMusteri.Name = "tabMusteri";
+            tabMusteri.Size = new Size(766, 511);
+            tabMusteri.Text = "👥 Musteri Yonetimi";
+            tabMusteri.Controls.Add(splitMusteri);
+
+            splitMusteri.Dock = DockStyle.Fill;
+            splitMusteri.Location = new Point(0, 0);
+            splitMusteri.Name = "splitMusteri";
+            splitMusteri.Panel1.Controls.Add(grpMusteriGiris);
+            splitMusteri.Panel2.Controls.Add(grpMusteriListe);
+            splitMusteri.Size = new Size(766, 511);
+            splitMusteri.SplitterPosition = 350;
+            splitMusteri.TabIndex = 0;
+
+            grpMusteriGiris.Controls.Add(lblMusteriAd);
+            grpMusteriGiris.Controls.Add(txtMusteriAd);
+            grpMusteriGiris.Controls.Add(lblMusteriEmail);
+            grpMusteriGiris.Controls.Add(txtMusteriEmail);
+            grpMusteriGiris.Controls.Add(lblMusteriBakiye);
+            grpMusteriGiris.Controls.Add(numMusteriBakiye);
+            grpMusteriGiris.Controls.Add(btnMusteriBakiyeGuncelle);
+            grpMusteriGiris.Dock = DockStyle.Fill;
+            grpMusteriGiris.Location = new Point(0, 0);
+            grpMusteriGiris.Name = "grpMusteriGiris";
+            grpMusteriGiris.Size = new Size(350, 511);
+            grpMusteriGiris.TabIndex = 0;
+            grpMusteriGiris.Text = "Musteri Bilgileri";
+
+            lblMusteriAd.Appearance.Font = new Font("Segoe UI", 11F);
+            lblMusteriAd.Location = new Point(20, 40);
+            lblMusteriAd.Name = "lblMusteriAd";
+            lblMusteriAd.Size = new Size(70, 20);
+            lblMusteriAd.Text = "Ad Soyad:";
+
+            txtMusteriAd.Location = new Point(20, 65);
+            txtMusteriAd.Name = "txtMusteriAd";
+            txtMusteriAd.Properties.ReadOnly = true;
+            txtMusteriAd.Size = new Size(300, 26);
+
+            lblMusteriEmail.Appearance.Font = new Font("Segoe UI", 11F);
+            lblMusteriEmail.Location = new Point(20, 110);
+            lblMusteriEmail.Name = "lblMusteriEmail";
+            lblMusteriEmail.Size = new Size(60, 20);
+            lblMusteriEmail.Text = "E-posta:";
+
+            txtMusteriEmail.Location = new Point(20, 135);
+            txtMusteriEmail.Name = "txtMusteriEmail";
+            txtMusteriEmail.Properties.ReadOnly = true;
+            txtMusteriEmail.Size = new Size(300, 26);
+
+            lblMusteriBakiye.Appearance.Font = new Font("Segoe UI", 11F);
+            lblMusteriBakiye.Location = new Point(20, 180);
+            lblMusteriBakiye.Name = "lblMusteriBakiye";
+            lblMusteriBakiye.Size = new Size(50, 20);
+            lblMusteriBakiye.Text = "Bakiye:";
+
+            numMusteriBakiye.Location = new Point(20, 205);
+            numMusteriBakiye.Name = "numMusteriBakiye";
+            numMusteriBakiye.Size = new Size(200, 26);
+
+            btnMusteriBakiyeGuncelle.Appearance.BackColor = Color.FromArgb(52, 152, 219);
+            btnMusteriBakiyeGuncelle.Appearance.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnMusteriBakiyeGuncelle.Appearance.ForeColor = Color.White;
+            btnMusteriBakiyeGuncelle.Appearance.Options.UseBackColor = true;
+            btnMusteriBakiyeGuncelle.Appearance.Options.UseFont = true;
+            btnMusteriBakiyeGuncelle.Appearance.Options.UseForeColor = true;
+            btnMusteriBakiyeGuncelle.Cursor = Cursors.Hand;
+            btnMusteriBakiyeGuncelle.Location = new Point(20, 260);
+            btnMusteriBakiyeGuncelle.Name = "btnMusteriBakiyeGuncelle";
+            btnMusteriBakiyeGuncelle.Size = new Size(200, 40);
+            btnMusteriBakiyeGuncelle.TabIndex = 6;
+            btnMusteriBakiyeGuncelle.Text = "💰 Bakiye Guncelle";
+            btnMusteriBakiyeGuncelle.Click += btnMusteriBakiyeGuncelle_Click;
+
+            grpMusteriListe.Controls.Add(gridMusteri);
+            grpMusteriListe.Dock = DockStyle.Fill;
+            grpMusteriListe.Location = new Point(0, 0);
+            grpMusteriListe.Name = "grpMusteriListe";
+            grpMusteriListe.Size = new Size(411, 511);
+            grpMusteriListe.TabIndex = 0;
+            grpMusteriListe.Text = "Musteri Listesi";
+
+            gridMusteri.Dock = DockStyle.Fill;
+            gridMusteri.Location = new Point(2, 28);
+            gridMusteri.MainView = gridViewMusteri;
+            gridMusteri.Name = "gridMusteri";
+            gridMusteri.Size = new Size(407, 481);
+            gridMusteri.TabIndex = 0;
+            gridMusteri.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridViewMusteri });
+
+            gridViewMusteri.Appearance.HeaderPanel.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+            gridViewMusteri.Appearance.HeaderPanel.Options.UseFont = true;
+            gridViewMusteri.Appearance.Row.Font = new Font("Segoe UI", 15F);
+            gridViewMusteri.Appearance.Row.Options.UseFont = true;
+            gridViewMusteri.GridControl = gridMusteri;
+            gridViewMusteri.Name = "gridViewMusteri";
+            gridViewMusteri.OptionsBehavior.Editable = false;
+            gridViewMusteri.OptionsView.ShowGroupPanel = false;
+            //
             // FrmPersonel
             //
             Appearance.Options.UseFont = true;
@@ -560,6 +689,23 @@ namespace Sinemaci.BiletSistemi.Forms
             grpSalonListe.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)gridSalon).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridViewSalon).EndInit();
+            tabMusteri.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitMusteri.Panel1).EndInit();
+            splitMusteri.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitMusteri.Panel2).EndInit();
+            splitMusteri.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitMusteri).EndInit();
+            splitMusteri.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)grpMusteriGiris).EndInit();
+            grpMusteriGiris.ResumeLayout(false);
+            grpMusteriGiris.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)txtMusteriAd.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtMusteriEmail.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numMusteriBakiye.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)grpMusteriListe).EndInit();
+            grpMusteriListe.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)gridMusteri).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridViewMusteri).EndInit();
             ResumeLayout(false);
 
         }
@@ -597,5 +743,18 @@ namespace Sinemaci.BiletSistemi.Forms
         private global::DevExpress.XtraEditors.GroupControl grpSalonListe;
         private global::DevExpress.XtraGrid.GridControl gridSalon;
         private global::DevExpress.XtraGrid.Views.Grid.GridView gridViewSalon;
+        private global::DevExpress.XtraTab.XtraTabPage tabMusteri;
+        private global::DevExpress.XtraEditors.SplitContainerControl splitMusteri;
+        private global::DevExpress.XtraEditors.GroupControl grpMusteriGiris;
+        private global::DevExpress.XtraEditors.LabelControl lblMusteriAd;
+        private global::DevExpress.XtraEditors.TextEdit txtMusteriAd;
+        private global::DevExpress.XtraEditors.LabelControl lblMusteriEmail;
+        private global::DevExpress.XtraEditors.TextEdit txtMusteriEmail;
+        private global::DevExpress.XtraEditors.LabelControl lblMusteriBakiye;
+        private global::DevExpress.XtraEditors.SpinEdit numMusteriBakiye;
+        private global::DevExpress.XtraEditors.SimpleButton btnMusteriBakiyeGuncelle;
+        private global::DevExpress.XtraEditors.GroupControl grpMusteriListe;
+        private global::DevExpress.XtraGrid.GridControl gridMusteri;
+        private global::DevExpress.XtraGrid.Views.Grid.GridView gridViewMusteri;
     }
 }

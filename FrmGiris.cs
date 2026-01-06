@@ -77,9 +77,12 @@ namespace Sinemaci.BiletSistemi.Forms
                 DevExpressUIHelper.ShowToast(this, $"Hoş geldiniz, {u.AdSoyad}!", AlertType.Success);
 
                 // Yeni formu aç ve bu formu kapat
-                XtraForm yeniForm = u.Rol == "Personel"
-                    ? new FrmPersonel(u.Id)
-                    : new FrmMusteri(u.Id);
+                XtraForm yeniForm = u.Rol switch
+                {
+                    "Admin" => new FrmAdmin(u.Id),
+                    "Personel" => new FrmPersonel(u.Id),
+                    _ => new FrmMusteri(u.Id)
+                };
 
                 yeniForm.FormClosed += (s, args) => Application.Exit();
                 yeniForm.Show();

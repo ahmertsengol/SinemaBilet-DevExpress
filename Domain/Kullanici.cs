@@ -10,7 +10,7 @@ public class Kullanici
     public string Email { get; set; } = "";
     public string SifreHash { get; set; } = "";
     public decimal Bakiye { get; set; }
-    public string Rol { get; set; } = "Musteri"; // Musteri | Personel
+    public string Rol { get; set; } = "Musteri"; // Musteri | Personel | Admin
 
     public ICollection<Bilet> Biletler { get; set; } = new List<Bilet>();
 }
