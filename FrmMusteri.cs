@@ -215,52 +215,11 @@ namespace Sinemaci.BiletSistemi.Forms
             DevExpressUIHelper.ShowToast(this, "Seans listesi güncellendi.", AlertType.Info);
         }
 
-        private async void btnBiletlerim_Click(object sender, EventArgs e)
+        private void btnBiletlerim_Click(object sender, EventArgs e)
         {
-            try
-            {
-                using var db = new AppDbContext();
-
-                var biletler = await db.Biletler
-                    .Include(b => b.Seans)
-                        .ThenInclude(s => s.Film)
-                    .Include(b => b.Seans)
-                        .ThenInclude(s => s.Salon)
-                    .Where(b => b.KullaniciId == _kullaniciId)
-                    .Select(b => new
-                    {
-                        Film = b.Seans.Film.Ad,
-                        Salon = b.Seans.Salon.Ad,
-                        Tarih = b.Seans.TarihSaat,
-                        Koltuk = b.KoltukNo,
-                        Tutar = b.Tutar,
-                        AlimZamani = b.AlimZamani
-                    })
-                    .OrderByDescending(b => b.AlimZamani)
-                    .ToListAsync();
-
-                if (biletler.Count == 0)
-                {
-                    XtraMessageBox.Show("Henüz bilet satın almadınız.", "Bilgi",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
-                // Biletleri grid'de göster
-                gridSeanslar.DataSource = biletler;
-
-                var gridView = gridSeanslar.MainView as GridView;
-                if (gridView != null)
-                {
-                    gridView.BestFitColumns();
-                    DevExpressUIHelper.ShowToast(this, $"{biletler.Count} biletiniz listelendi.", AlertType.Success);
-                }
-            }
-            catch (Exception ex)
-            {
-                XtraMessageBox.Show($"Biletler yüklenirken hata oluştu:\n\n{ex.Message}",
-                    "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            // Yeni modern biletlerim sayfasını aç
+            using var frmBiletlerim = new FrmBiletlerim(_kullaniciId);
+            frmBiletlerim.ShowDialog(this);
         }
     }
 }

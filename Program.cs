@@ -42,8 +42,9 @@ internal static class Program
         {
             using (var db = new AppDbContext())
             {
-                // Veritabanı oluştur (SQLite)
-                db.Database.EnsureCreated();
+                // Migration'ları uygula (Production için doğru yöntem)
+                // Database kalıcıdır - çıkış yapıp geri girince veriler korunur
+                db.Database.Migrate();
 
                 // Demo verileri sadece veritabanı boşsa ekle
                 if (!db.Kullanicilar.Any())

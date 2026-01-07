@@ -12,6 +12,11 @@ public class Bilet
     public decimal Tutar { get; set; }
     public DateTime AlimZamani { get; set; } = DateTime.UtcNow;
 
+    /// <summary>
+    /// QR kod için benzersiz bilet numarası (GUID formatında)
+    /// </summary>
+    public string BenzersizKod { get; set; } = Guid.NewGuid().ToString();
+
     public Seans? Seans { get; set; }
     public Kullanici? Kullanici { get; set; }
 }
